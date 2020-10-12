@@ -1,0 +1,7 @@
+mixin matchWeekNav(week, currentWeek, link)
+  if currentWeek
+    p(class='match-week active')
+      | !{week}
+  else
+    a(class='match-week' href=link)
+      | !{week}

@@ -1,0 +1,4 @@
+mixin team(team)
+  div(id='team-' + team.slug class='team')
+    p(class=team.playsAtHome ? 'home' : 'away' title=team.fullName)
+      | #{team.team}

@@ -1,0 +1,4 @@
+data/
+node_modules/
+public_html/
+ssg/js/vendor/

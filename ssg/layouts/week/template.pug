@@ -1,0 +1,28 @@
+include ../../components/fixture/template.pug
+include ../../components/matchWeekNav/template.pug
+include ../../components/seasson/template.pug
+include ../head/template.pug
+
+doctype html
+html(lang="es")
+  +head(title)
+
+  body(class="fixtures" id="fixture" + currentWeek)
+    hgroup
+      a(href="/")
+        h2.title 1-0.futbol 
+          sup (beta)
+      +seasson(seasson, currentWeek)
+
+    nav
+      ul
+        each week in weeks
+          - var link = `temporada-${seasson.slug}-jornada-${week}.html`
+          li
+            +matchWeekNav(week, week == currentWeek, link)
+
+    div.fixtures
+      each fixture in fixtures
+        +fixture(fixture, dateUtils)
+
+    script(src="1-0.min.js" type="application/javascript")
