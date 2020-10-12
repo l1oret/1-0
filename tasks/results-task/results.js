@@ -1,8 +1,8 @@
 import pipe from 'ramda/src/pipe.js';
 
-import buildWeeks from '../builder/weekBuilder.js';
+import { buildWeeks } from '../../ssg/weekBuilder.js';
 import dateUtils from '../utils/dateUtils.js';
-import fixtureModel from '../components/fixture/model.js';
+import { FixtureController } from '../controllers/controllers.js';
 import tweetModel from '../twitter/model.js';
 import { ResultFactory, TwitterFactory } from '../factories/factories.js';
 import { io } from '../app.js';
@@ -84,7 +84,11 @@ const processTweets = async (response, fixture) => {
     }
     console.log(response.results);
     fixture.score = getFinalResult(response.results);
-    fixtureModel.setScoreById(fixture.id, fixture.score.toString(), response);
+    FixtureController.setScoreById(
+      fixture.id,
+      fixture.score.toString(),
+      response
+    );
     io.emit('home', buildContent(fixture));
     buildWeeks();
     console.info('[1-0]', fixture.getSlug(), fixture.score.toString());
@@ -95,15 +99,16 @@ const processTweets = async (response, fixture) => {
 
 const run = async (date = dateUtils.getCurrentDate()) => {
   try {
-    /* let fixture = await fixtureModel.getByTeams(
-      '19-20',
-      38,
-      'LevanteUD',
-      'GetafeCF'
-    )
-    tweetModel.getByFixture(fixture, processTweets)*/
+    /* let fixture = FixtureController.findOneByTeams({
+      seasson: '19-20',
+      week: 38,
+      homeTeam: 'LevanteUD',
+      awayTeam: 'GetafeCF'
+    });
 
-    const fixtures = await fixtureModel.getByDate(date);
+    tweetModel.getByFixture(fixture, processTweets) */
+
+    const fixtures = await FixtureController.findByDate({ date });
 
     if (!fixtures.length) {
       throw new Error('No fixtures found!');

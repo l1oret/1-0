@@ -1,4 +1,4 @@
-import getWeeks from '../../layouts/week/weekUtils.js';
+import getWeeks from '../../ssg/layouts/week/weekUtils.js';
 
 describe('Get weeks to show from current week', () => {
   test('Current week -1', () => {

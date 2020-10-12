@@ -4,7 +4,7 @@ import express from 'express';
 import http from 'http';
 import socket from 'socket.io';
 
-import resultsTask from './tasks.js';
+import { resultsTask } from './tasks.js';
 
 dotenv.config();
 

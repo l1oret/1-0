@@ -6,7 +6,8 @@ const REGEX_REMOVE_WHITESPACE = /\s/g;
 const create = (result = DEFAULT_RESULT) => {
   const [home, away] = result
     .replace(REGEX_REMOVE_WHITESPACE, '')
-    .split(SCORE_SEPARATOR);
+    .split(SCORE_SEPARATOR)
+    .map((score) => Number(score));
 
   return {
     home,
