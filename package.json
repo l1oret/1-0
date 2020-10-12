@@ -6,16 +6,17 @@
   "type": "module",
   "scripts": {
     "build": "node ssg/build.js",
-    "devstart": "nodemon ./task/bin/www",
+    "devstart": "nodemon ./tasks/app.js",
     "fix": "eslint --fix . && echo 'Fix complete!'",
     "integration": "jest test/integration",
     "lint": "eslint . && echo 'Lint complete!'",
-    "start": "node ./task/bin/www",
+    "start": "node ./tasks/app.js",
     "unit": "jest test/unit"
   },
   "author": "José Luis Loret (https://1-0.futbol)",
   "license": "MIT",
   "devDependencies": {
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "chalk": "^4.1.0",
     "eslint": "^7.10.0",
