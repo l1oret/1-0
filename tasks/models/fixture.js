@@ -41,6 +41,9 @@ const initFixtureModel = ({
         allowNull: true,
         get() {
           return ResultFactory.create(this.getDataValue('score'));
+        },
+        set(score) {
+          this.setDataValue('score', score.toString());
         }
       },
       startDate: {
