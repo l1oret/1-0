@@ -6,7 +6,14 @@ const { Op } = Sequelize;
 
 const findOneByTeams = ({ seasson, week, homeTeam, awayTeam }) =>
   FixtureModel.findOne({
-    attributes: ['finishDate', 'id', 'matchWeek', 'score', 'startDate'],
+    attributes: [
+      'finishDate',
+      [Sequelize.fn('HEX', Sequelize.col('fixture.id')), 'id'],
+      'matchWeek',
+      'score',
+      'startDate',
+      'data'
+    ],
     where: { matchWeek: week },
     include: [
       {
@@ -98,14 +105,23 @@ const findByDate = ({ dateString }) =>
       console.log('Error while retrieving Fixtures', err);
     });
 
-const updateFixtureResultById = ({ id, score, data }) =>
-  FixtureModel.update({ score, data }, { where: { id } })
-    .then((data) => {
-      console.log(data);
+const updateFixtureResultById = ({ id, score, data }) => {
+  console.log('id', id, 'score', score);
+  return FixtureModel.update(
+    { score, data },
+    {
+      where: Sequelize.where(Sequelize.fn('HEX', Sequelize.col('id')), id),
+      returning: true,
+      plain: true
+    }
+  )
+    .then((result) => {
+      console.log(result);
     })
     .catch((err) => {
       console.log('Error while retrieving Fixtures', err);
     });
+};
 
 export {
   findByDate,
