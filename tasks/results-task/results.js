@@ -82,13 +82,15 @@ const processTweets = async (response, fixture) => {
     if ('error' in response || !response.results.length) {
       throw new Error('No tweets found!');
     }
-    console.log(response.results);
+
     fixture.score = getFinalResult(response.results);
-    FixtureController.setScoreById(
-      fixture.id,
-      fixture.score.toString(),
-      response
-    );
+
+    FixtureController.updateFixtureResultById({
+      id: fixture.id,
+      score: fixture.score.toString(),
+      data: response
+    });
+
     io.emit('home', buildContent(fixture));
     buildWeeks();
     console.info('[1-0]', fixture.getSlug(), fixture.score.toString());
@@ -99,24 +101,15 @@ const processTweets = async (response, fixture) => {
 
 const run = async (date = dateUtils.getCurrentDate()) => {
   try {
-    /* let fixture = FixtureController.findOneByTeams({
-      seasson: '19-20',
-      week: 38,
-      homeTeam: 'LevanteUD',
-      awayTeam: 'GetafeCF'
-    });
-
-    tweetModel.getByFixture(fixture, processTweets) */
-
     const fixtures = await FixtureController.findByDate({ date });
 
     if (!fixtures.length) {
       throw new Error('No fixtures found!');
     }
 
-    for (const fixture of fixtures) {
-      tweetModel.getByFixture(fixture, processTweets);
-    }
+    fixtures.forEach((fixture) =>
+      tweetModel.getByFixture(fixture, processTweets)
+    );
   } catch (error) {
     console.error('[1-0]', error.message, error);
   }
