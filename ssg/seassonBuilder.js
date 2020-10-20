@@ -17,7 +17,7 @@ const buildSeassons = async () => {
     const fileName = getFileName(seasson.slug);
     const fileContent = minify(seassonLayout);
 
-    fileUtils.createFile(`public_html/${fileName}`, fileContent);
+    fileUtils.createFile(fileName, fileContent);
   }
 };
 

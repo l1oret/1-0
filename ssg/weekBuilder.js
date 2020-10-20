@@ -26,7 +26,7 @@ const buildWeeks = async () => {
       const fileName = getFileName(seasson.slug, week);
       const fileContent = minify(weekLayout);
 
-      fileUtils.createFile(`public_html/${fileName}`, fileContent);
+      fileUtils.createFile(fileName, fileContent);
     }
   }
 };

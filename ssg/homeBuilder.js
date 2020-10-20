@@ -16,7 +16,7 @@ const buildHome = async () => {
   const fileName = getFileName();
   const fileContent = minify(seassonLayout);
 
-  fileUtils.createFile(`public_html/${fileName}`, fileContent);
+  fileUtils.createFile(fileName, fileContent);
 };
 
 export { buildHome };
