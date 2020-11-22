@@ -2,18 +2,20 @@ include ../result/template.pug
 include ../team/template.pug
 
 mixin fixture(fixture)
-  div(id='fixture-' + fixture.getSlug() class='fixture')
-    if fixture.startDate
-      time(datetime=dateUtils.toISODate(fixture.startDate))
-        | !{dateUtils.toFriendlyDate(fixture.startDate)}
-    else
-      span
-        | Por determinar
+  table(id='fixture-' + fixture.getSlug() class='fixture')
+    tr
+      td(colspan=2)
+        if fixture.startDate
+          time(datetime=dateUtils.toISODate(fixture.startDate))
+            | !{dateUtils.toFriendlyDate(fixture.startDate)}
+        else
+          span
+            | Por determinar
 
-    div.teams
+    tr.teams
       +team(fixture.homeTeam)
       +team(fixture.awayTeam)
 
-    div(id=fixture.getSlug() class=fixture.hasStarted() ? 'scores started' : 'scores')
+    tr(id=fixture.getSlug() class=fixture.hasStarted() ? 'scores started' : 'scores')
       +score(fixture.score.home)
       +score(fixture.score.away)
