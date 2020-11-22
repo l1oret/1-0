@@ -40,7 +40,9 @@ const initFixtureModel = ({
         type: DataTypes.STRING(5),
         allowNull: true,
         get() {
-          return ResultFactory.create(this.getDataValue('score'));
+          const result =
+            this.getDataValue('score') ?? ResultFactory.DEFAULT_RESULT;
+          return ResultFactory.create(result);
         },
         set(score) {
           this.setDataValue('score', score.toString());
@@ -55,7 +57,7 @@ const initFixtureModel = ({
         allowNull: true
       },
       data: {
-        type: 'LONGTEXT',
+        type: DataTypes.TEXT,
         allowNull: true
       }
     },
@@ -94,7 +96,7 @@ const initFixtureModel = ({
   };
 
   FixtureModel.prototype.hasStarted = function () {
-    return dateUtils.isValidDate(this.startDate)
+    return dateUtils.isValidDate(this.startDate ?? '')
       ? dateUtils.toLocalDate(this.startDate) <= dateUtils.getCurrentDate()
       : false;
   };

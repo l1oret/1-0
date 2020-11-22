@@ -88,7 +88,7 @@ const processTweets = async (response, fixture) => {
     FixtureController.updateFixtureResultById({
       id: fixture.id,
       score: fixture.score.toString(),
-      data: response
+      data: JSON.stringify(response)
     });
 
     io.emit('home', buildContent(fixture));
