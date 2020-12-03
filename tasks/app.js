@@ -4,6 +4,7 @@ import express from 'express';
 import http from 'http';
 import socket from 'socket.io';
 
+import dateUtils from './utils/dateUtils.js';
 import { resultsTask } from './tasks.js';
 
 dotenv.config();
@@ -22,7 +23,7 @@ server.listen(process.env.APP_PORT, () =>
 
 new cron.CronJob('0 */30 * * * *', function () {
   console.info('[1-0]', new Date());
-  resultsTask.run();
+  resultsTask.runByDate(dateUtils.getCurrentDate());
 }).start();
 
 export { app, io };

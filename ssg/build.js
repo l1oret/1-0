@@ -3,7 +3,7 @@ import { buildSeassons } from './seassonBuilder.js';
 import { buildWeeks } from './weekBuilder.js';
 import { sequelize } from '../tasks/auth/database.js';
 
-(async () => {
+const build = async () => {
   await Promise.all([buildHome(), buildSeassons(), buildWeeks()])
     .then(() => {
       console.log('Built!');
@@ -14,4 +14,6 @@ import { sequelize } from '../tasks/auth/database.js';
     .finally(() => {
       sequelize.close();
     });
-})();
+};
+
+export { build };
