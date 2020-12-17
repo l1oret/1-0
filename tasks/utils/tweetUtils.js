@@ -2,6 +2,12 @@ import { authorization } from '../auth/twitter.js';
 import dateUtils from './dateUtils.js';
 import moment from 'moment-timezone';
 
+// 0️⃣-9️⃣ | 0⃣-9⃣
+const unicodeKeycapRegExps = Array.from(
+  { length: 10 },
+  (value, index) => `\\u003${index}(\\ufe0f)?\\u20e3`
+);
+
 const ignoredHashtags = [
   // AthleticClub
   'PLInternationalCup',
@@ -19,8 +25,16 @@ const ignoredHashtags = [
 
 const ignoredStrings = ['Getafe B'];
 
-const getTweetText = (tweet) =>
-  tweet.truncated ? tweet.extended_tweet.full_text : tweet.text;
+const replaceKeyCap = (accumulator, unicodeKeycapRegExp, index) =>
+  accumulator.replace(new RegExp(unicodeKeycapRegExp, 'gi'), index);
+
+const getTweetText = (tweet) => {
+  const tweetText = tweet.truncated
+    ? tweet.extended_tweet.full_text
+    : tweet.text;
+
+  return unicodeKeycapRegExps.reduce(replaceKeyCap, tweetText);
+};
 
 const isRetweet = (tweet) => 'retweeted_status' in tweet;
 
@@ -28,25 +42,39 @@ const isReply = (tweet) =>
   tweet.in_reply_to_status_id !== null &&
   tweet.in_reply_to_user_id !== tweet.user.id;
 
-const isLaLiga = (tweet) => {
-  let isLaLiga = true;
+const hasIgnoredHastags = (tweet) => {
+  let hasIgnoredHastag = false;
 
-  if ('entities' in tweet && 'hashtags' in tweet.entities) {
-    for (const hashtag of tweet.entities.hashtags) {
-      if (isLaLiga && ignoredHashtags.includes(hashtag.text.toLowerCase())) {
-        isLaLiga = false;
+  if (tweet.entities?.hashtags) {
+    tweet.entities.hashtags.forEach((hashtag) => {
+      if (
+        !hasIgnoredHastag &&
+        ignoredHashtags.includes(hashtag.text.toLowerCase())
+      ) {
+        hasIgnoredHastag = true;
       }
-    }
+    });
   }
 
-  for (const ignoredString of ignoredStrings) {
+  return hasIgnoredHastag;
+};
+
+const hasIgnoredStrings = (tweet) => {
+  let hasIgnoredString = false;
+
+  ignoredStrings.forEach((ignoredString) => {
     const regex = new RegExp(`^(.*?(\\b${ignoredString}\\b)[^$]*)$`, 'igm');
-    if (regex.test(tweet.text)) {
-      isLaLiga = false;
-    }
-  }
 
-  return isLaLiga;
+    if (!hasIgnoredString && regex.test(tweet.text)) {
+      hasIgnoredString = true;
+    }
+  });
+
+  return hasIgnoredString;
+};
+
+const isLaLiga = (tweet) => {
+  return !hasIgnoredHastags(tweet) && !hasIgnoredStrings(tweet);
 };
 
 const buildRequest = (
