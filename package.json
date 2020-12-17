@@ -32,6 +32,7 @@
     "@octokit/rest": "^18.0.6",
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
+    "emoji-unicode": "^2.0.1",
     "express": "^4.17.1",
     "html-minifier": "^4.0.0",
     "moment-timezone": "^0.5.31",
