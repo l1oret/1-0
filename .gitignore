@@ -1,7 +1,8 @@
+.env
 data/
 node_modules/
 public_html/
 service/
 tasks/auth/twitter.js
+tasks/results-task/test.js
 tmp/
-.env
