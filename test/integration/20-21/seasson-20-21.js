@@ -7,6 +7,8 @@ import week06 from './week-06.js';
 import week07 from './week-07.js';
 import week08 from './week-08.js';
 import week09 from './week-09.js';
+import week10 from './week-10.js';
+import week11 from './week-11.js';
 
 const weeks = [
   week01,
@@ -17,7 +19,9 @@ const weeks = [
   week06,
   week07,
   week08,
-  week09
+  week09,
+  week10,
+  week11
 ];
 
 export default weeks;
