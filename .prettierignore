@@ -1,6 +1,0 @@
-data/
-node_modules/
-public_html/
-ssg/js/vendor/
-package-lock.json
-package.json
